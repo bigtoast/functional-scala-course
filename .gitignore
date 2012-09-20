@@ -1,4 +1,9 @@
 
 **/*.class
 *~
-
+target
+**/target
+*.class
+**/.cache
+.cache
+**/.DS_Store
