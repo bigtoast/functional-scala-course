@@ -31,13 +31,8 @@ object Main {
       else 
         next( curC + 1, curR, curRow :+ calc, prevRow )
     }
-    
-    if ( c == 0 || r == 0 || r == 1 )
-      1     
-    else if ( c == 1 || c + 1 - r == 0 )
-      r
-    else 
-      next( 0, 0, IndexedSeq.empty[Int], IndexedSeq.empty[Int])
+
+    next( 0, 0, IndexedSeq.empty[Int], IndexedSeq.empty[Int])
   }
 
   /**
