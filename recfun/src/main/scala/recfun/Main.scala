@@ -14,26 +14,11 @@ object Main {
   /**
    * Exercise 1
    */
-  def pascal(c: Int, r: Int): Int = {
-    
-    def next( curC :Int, curR :Int, curRow :IndexedSeq[Int], prevRow :IndexedSeq[Int] ) :Int = {
-      def calc = { 
-	      if ( prevRow.isDefinedAt(curC - 1) && prevRow.isDefinedAt(curC) )
-	        prevRow( curC - 1 ) + prevRow(curC)
-	      else 
-	        1
-      }
-
-      if ( curR == r  && curC == c ) 
-        calc
-      else if ( curC == curR ) 
-        next( 0, curR + 1, IndexedSeq.empty[Int] , curRow :+ calc )
-      else 
-        next( curC + 1, curR, curRow :+ calc, prevRow )
-    }
-
-    next( 0, 0, IndexedSeq.empty[Int], IndexedSeq.empty[Int])
-  }
+  def pascal(c: Int, r: Int): Int = 
+    if ( c == 0 || c == r )
+      1
+    else
+      pascal( c , r - 1 ) + pascal( c - 1, r - 1 )
 
   /**
    * Exercise 2
