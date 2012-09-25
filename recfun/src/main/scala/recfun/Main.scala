@@ -17,17 +17,18 @@ object Main {
   def pascal(c: Int, r: Int): Int = {
     
     def next( curC :Int, curR :Int, curRow :IndexedSeq[Int], prevRow :IndexedSeq[Int] ) :Int = {
-      def calc = 
-	      if ( prevRow.isDefinedAt(curR - 1) )
-	        prevRow( curR - 1 ) + prevRow(0)
+      def calc = { 
+	      if ( prevRow.isDefinedAt(curC - 1) && prevRow.isDefinedAt(curC) )
+	        prevRow( curC - 1 ) + prevRow(curC)
 	      else 
-	        prevRow(0)
-      
-      if ( curR == r - 1 && curC == c ) 
+	        1
+      }
+
+      if ( curR == r  && curC == c ) 
         calc
-      else if ( curC == curR )
-        next( 0, curR + 1, IndexedSeq.empty[Int], curRow :+ calc )
-      else
+      else if ( curC == curR ) 
+        next( 0, curR + 1, IndexedSeq.empty[Int] , curRow :+ calc )
+      else 
         next( curC + 1, curR, curRow :+ calc, prevRow )
     }
     
@@ -35,8 +36,8 @@ object Main {
       1     
     else if ( c == 1 || c + 1 - r == 0 )
       r
-    else
-      next( 0, 0, IndexedSeq.empty[Int], IndexedSeq.empty[Int] )
+    else 
+      next( 0, 0, IndexedSeq.empty[Int], IndexedSeq.empty[Int])
   }
 
   /**
