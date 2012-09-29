@@ -77,6 +77,8 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val evens = union( s2, x => x % 2 == 0 )
+    val odds = union( s1, x => x % 2 == 1 )
   }
 
   /**
@@ -165,4 +167,50 @@ class FunSetSuite extends FunSuite {
       assert(!contains(i,6), "doesn't have 6")
     }
   }
+  
+  test("forall passes when it should"){
+    new TestSets {
+      val even = add(add(add(add(add(s2,12),4),6),8),10)
+      assert( forall(even, x => x % 2 == 0 ) )
+      assert( forall(evens, x => x % 2 == 0 ) )
+    }
+  }
+  
+  test("forall doesn't pass when it shouldn't"){
+    new TestSets {
+      val mix = add(add(add(add(add(add(s2,12),4),6),8),10),11)
+      
+      assert(! forall(mix, x => x % 2 == 0 ) )
+    }
+  }
+  
+  test("exists should find  666"){
+    val s = singletonSet(666)
+    assert(exists(s, _ == 666 ) ) 
+  }
+  
+  test("exists should not find out of bounds"){
+    val s = add(singletonSet(-1111),1111)
+    assert(! exists(s, x => math.abs(x) == 1111))
+  }
+  
+  test("mapping should turn evens into odds"){
+    new TestSets {
+      val newOdd = map(evens, _ - 1 )
+      assert(! forall( newOdd, _ % 2 == 0 ) )
+    }
+  }
+  
+  test("mapping should double values"){
+    new TestSets {
+      val s = add( s2, 4 )
+      val d = map( s, _ * 2 )
+      assert( contains(d, 4), "contains 4" )
+      assert( contains(d, 8), "contains 8" )
+      assert( ! contains(d, 2), "doesn't contain 2" )
+      assert( forall(d, x => x == 4 || x == 8), "forall 4 or 8")    
+    }
+  }
+  
+  
 }
