@@ -59,7 +59,8 @@ object FunSets {
    * the set of all elements of `s` that are not in `t`.
    */
   def diff(s: Set, t: Set): Set = { in : Int =>
-    union(s,t)(in) && ! intersect(s,t)(in)
+    //union(s,t)(in) && ! intersect(s,t)(in)
+    contains(s,in) && ! contains(t, in )
   }
 
   /**

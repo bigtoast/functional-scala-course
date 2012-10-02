@@ -15,6 +15,7 @@ union :: Set -> Set -> Set
 
 intersect :: Set -> Set -> Set
 
+-- what is in set one that is not in set 2
 diff :: Set -> Set -> Set
 
 filt :: Set -> ( Int -> Bool ) -> Set
@@ -36,7 +37,7 @@ union s1 s2 = \int -> (contains s1 int) || ( contains s2 int )
 
 intersect s1 s2 = \int -> (contains s1 int ) && ( contains s2 int )
 
-diff s1 s2 = \int -> (union s1 s2 int) && ( not $ intersect s1 s2 int )
+diff s1 s2 = \int -> (contains s1 int) && ( not (contains s2 int) )
 
 filt s1 predicate = \int -> ( contains s1 int ) && predicate int
 
@@ -80,12 +81,20 @@ tUnion = TestCase $ do
     let t = u `contains` 1 && u `contains` 2
     assertEqual "union of s1 and s2 contains 2 and 1" t True
 
+tDiff = TestCase $ do
+    let f = s1 <+ 2 <+ 3 <+ 4
+    let s = s2 <+ 4 <+ 6 <+ 8 <+ 9
+    let d = diff f s
+    assertEqual "has 1" (d `contains` 1) True
+    assertEqual "has 3" (d `contains` 3) True
+    assertEqual "missing 6" (d `contains` 6) False
+
 tMap = TestCase $ do
     let n = someOdds `mp` (+1)
     let t = n `contains` 2 && n `contains` 4 && ( not $ n `contains` 5 )
     assertEqual "mapping odds to evens" t True
 
-tests = TestList[ tContains1, tContains2, tUnion, tAdd, tMap ]
+tests = TestList[ tContains1, tContains2, tUnion, tAdd, tDiff, tMap ]
 
 --main =
 --    let s = singletonSet 5

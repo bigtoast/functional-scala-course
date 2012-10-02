@@ -157,14 +157,55 @@ class FunSetSuite extends FunSuite {
       val i = diff(a,b)
       assert(contains(i,1), "does have 1")
       assert(contains(i,3), "does have 3")
-      assert(contains(i,7), "does have 7")
-      assert(contains(i,8), "does have 8")
-      assert(contains(i,9), "does have 9")
+      
+      assert(!contains(i,7), "doesn't have 7")
+      assert(!contains(i,8), "doesn't have 8")
+      assert(!contains(i,9), "doesn't have 9")
       
       assert(!contains(i,2), "doesn't have 2")
       assert(!contains(i,4), "doesn't have 4")
       assert(!contains(i,5), "doesn't have 5")
       assert(!contains(i,6), "doesn't have 6")
+    }
+  }
+  
+  test("diff {1,3,4,5,7,1000} and {1,2,3,4} should be {5,7,1000}"){
+    new TestSets {
+      val a = union(union(union(union(union(s1, s3),singletonSet(4)),singletonSet(5)),singletonSet(7)),singletonSet(1000))
+      val b = union(union(union(s1, s2),singletonSet(3)),singletonSet(4))
+      val i = diff(a,b)
+      //assert(contains(i,2), "does have 2")
+      assert(contains(i,5), "does have 5")
+      assert(contains(i,7), "does have 7")
+      assert(contains(i,1000), "does have 1000")
+      
+      assert(!contains(i,2), "doesn't have 2")
+      assert(!contains(i,1), "doesn't have 1")
+      assert(!contains(i,3), "doesn't have 3")
+      assert(!contains(i,4), "doesn't have 4")
+      
+      assert(FunSets.toString(i) == "{5,7,1000}", "tostring matches")
+    }
+  }
+  
+  test("{-1000,0} and {1,2,3,4}"){
+    new TestSets {
+      val a = union(singletonSet(0),singletonSet(-1000))
+      val b = union(union(union(s1, s2),singletonSet(3)),singletonSet(4))
+      val i = diff(a,b)
+      assert(!contains(i,2), "doesn't have 2")
+      
+      assert(contains(i,0), "does have 0")
+      assert(contains(i,-1000), "does have -1000")
+      
+      assert(!contains(i,1), "doesn't have 1")
+      assert(!contains(i,3), "doesn't have 3")
+      assert(!contains(i,4), "doesn't have 4")
+      
+      assert(exists(i, _ == 0), "0 exists")
+      assert(exists(i, _ == -1000), "-1000 exists" )
+      
+      assert(FunSets.toString(i) == "{-1000,0}","to string matches")
     }
   }
   
