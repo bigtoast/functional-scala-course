@@ -11,6 +11,3 @@ target
 .cache
 **/.DS_Store
 .DS_Store
-**/FunSets.scala
-**/Main.scala
-**/TweetSet.scala
